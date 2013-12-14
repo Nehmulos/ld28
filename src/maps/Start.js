@@ -16,7 +16,7 @@ MapStart = {
     },
     
     exits: {
-        door: {i: 36, map: "Map2"}
+        doorStart: {i: 37, map: "Map2"}
     },
     
     scripts: [
@@ -24,7 +24,10 @@ MapStart = {
             i: 35,
             onEnter: function(event) {
                 if (event.entity.isPlayer()) {
-                    console.log("player entered tile");
+                    console.log(
+                        "player entered tile",
+                        event.context.removeObserver("onEnter", this)
+                    );
                 }
             }
         }

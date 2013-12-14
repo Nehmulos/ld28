@@ -4,11 +4,6 @@ function Tile(tileMap, type) {
     this.type = type;
     this.blocking = false;
     
-    this.onEnter = null;
-    this.onLeave = null;
-    this.onTalkOn = null;
-    this.onTalkTo = null;
-    this.onSearch = null;
     Observable.prototype.constructor.call(this);
 }
 
@@ -53,8 +48,10 @@ Tile.prototype.setEntity = function(entity) {
         if (oldTile) {
             oldTile.entity = null;
             oldTile.fireEvent("iconChange");
+            oldTile.fireEvent("onLeave", {entity: entity});
         }
         this.fireEvent("iconChange");
+        this.fireEvent("onEnter", {entity: entity});
         return true;
     } else {
         console.log("tile already used by other entity");
@@ -66,11 +63,6 @@ Tile.prototype.serialize = function() {
     var obj = {};
     Serialize(obj, "type", this.type);
     Serialize(obj, "blocking", this.blocking);
-    Serialize(obj, "onEnter", this.onEnter);
-    Serialize(obj, "onLeave", this.onLeave);
-    Serialize(obj, "onTalkOn", this.onTalkOn);
-    Serialize(obj, "onTalkTo", this.onTalkTo);
-    Serialize(obj, "onSearch", this.onSearch);
     return obj;
 }
 

@@ -27,19 +27,25 @@ TileMap.forJsonData = function(data) {
     for (var i=0; i < total; ++i) {
         t.tiles.push(Tile.forChar(t, data.tileString[i]));
     }
-    /*
-    for (var i=0; i < total; ++i) {
-        t.tiles.push(Tile.forJsonData(t, data.tiles[i]));
-    }
-    */
     
     t.entrances = data.entrances
-    for (var i=0; i < data.exits; ++i) {
-        var exit = data.exits[i];
-        t.tiles[exit.i].onEnter = function(event) {
-            console.log("enter");
+    for (var key in data.exits) {
+        var exit = data.exits[key];
+        t.tiles[exit.i].addObserver("onEnter", function(event) {
+            console.log("exit use", event.entity);
+        });
+    }
+    
+    for (var i=0; i < data.scripts.length; ++i) {
+        var script = data.scripts[i];
+        for (var key in script) {
+            if (key == "i") {
+                continue;
+            }
+            t.tiles[script.i].addObserver(key, script[key]);
         }
     }
+    
     return t;
 }
 
