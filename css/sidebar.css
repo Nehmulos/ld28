@@ -1,0 +1,24 @@
+#minimap {
+    width: 100%;
+    height: 150px;
+    background-color: #1b1b1b;
+    overflow: hidden;
+}
+
+#minimap .tile {
+    display: inline-block;
+    overflow: hidden;
+    float:left;
+}
+
+#minimap .tile.first {
+    clear:left;
+}
+
+#items {
+    background-color: #1e1e1e;
+}
+
+#gameSideBar .headline {
+    text-align: center;
+}

@@ -1,0 +1,8 @@
+tile map:
+    move, collide with wall
+    minimap render images, tiles for all walls
+    special icons
+    
+textStep:
+    print, delay, char by char show,
+    

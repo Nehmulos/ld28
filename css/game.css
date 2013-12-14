@@ -1,0 +1,35 @@
+#game {
+    position:relative;
+    width: 100%;
+    min-width: 800px;
+    height: 100%;
+}
+
+#gameSideBar {
+    position: relative;
+    display: inline-block;
+    float: right;
+    width: 25%;
+    min-width: 200px;
+    height: 100%;
+    background-color: #1f1f1f;
+}
+
+#gameText {
+    float: left;
+    display: inline-block;
+    width: 75%;
+    min-width: 400px;
+    height: 75%;
+    background-color: #222;
+}
+
+#gameBottomBar {
+    float: left;
+    clear: left;
+    display: inline-block;
+    width: 75%;
+    min-width: 400px;
+    height: 25%;
+    background-color: #232323;
+}

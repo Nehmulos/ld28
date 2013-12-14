@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Local Mastermind</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        
+        <link rel="stylesheet" href="css/game.css" type="text/css" media="screen" title="no title" />
+        <link rel="stylesheet" href="css/sidebar.css" type="text/css" media="screen" title="no title" />
+        <link rel="stylesheet" href="css/bottombar.css" type="text/css" media="screen" title="no title" />
+        <link rel="stylesheet" href="css/text.css" type="text/css" media="screen" title="no title" />
+        <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen" title="no title" />
+        
+        <!-- Libraries -->
+        <script src="lib/jquery-1.7.2.min.js" defer></script>
+        <script src="lib/cocos2d-beta2.js"></script>
+        <script src="lib/box2d.js" defer></script>
+        
+        <!-- Utils -->
+        <script src="src/Utils.js" defer></script>
+        <script src="src/Observable.js" defer></script>
+        <script src="src/Serialize.js" defer></script>
+        
+        <!-- Game -->
+        <script src="src/Globals.js" defer></script>
+        <script src="src/Audiomanager.js" defer></script>
+        <script src="src/Resources.js" defer></script>
+        <script src="src/Input.js" defer></script>
+        
+        <script src="src/Tile.js" defer></script>
+        <script src="src/TileMap.js" defer></script>
+        <script src="src/Entity.js" defer></script>
+        <script src="src/Player.js" defer></script>
+        
+        <script src="src/MiniMap.js" defer></script>
+        <script src="src/Editor.js" defer></script>
+        
+        <script src="src/Game.js" defer></script>
+    </head>
+
+    <body>
+        <!--<img src="img/header.png" style="display:block"/> -->
+        <div id="game">
+            <div id="gameText"></div>
+            <div id="gameSideBar">
+                <div class="headline">
+                    Headline
+                </div>
+                <div id="minimap">
+                    ....
+                </div>
+                <div id="editTile">
+                    <input>tile</input><br/>
+                    <button>map code</button>
+                </div>
+                <div id="items">
+                    <div class="headline">Items:</div>
+                    <div class="slot" data-slot="leftHand">
+                        <div class="label">Left Hand</div>
+                        <div class="item"></div>
+                    </div>
+                    <div class="slot" data-slot="rightHand">
+                        <div class="label">Right Hand</div>
+                        <div class="item"></div>
+                    </div>
+                    <div class="slot" data-slot="special">
+                        <div class="label">Special</div>
+                        <div class="item"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="gameBottomBar">
+                <div class="buttons">
+                    <button>(w) north</button>
+                    <button>(a) west</button>
+                    <button>(s) south</button>
+                    <button>(d) east</button>
+                </div>
+            
+            </div>
+        </div>
+        
+        <div class="textBelow">
+            <input class="fullscreenButton" type="button" value="fullscreen"/>
+            <h1 style=" margin-top:5px; padding-top:0;">LD28</h1>
+            <br/>
+            <div class="instructions">
+                Controls:
+                <hr/>
+                <b>wasd</b>:  move<br/>
+            </div>
+        </div>
+        
+    </body>
+</html>
