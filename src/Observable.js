@@ -24,6 +24,8 @@ Observable.inherit(Object, {
     
     fireEvent: function(eventType, event) {
         if (this.observers[eventType]) {
+            event = event || {};
+            event.context = this;
             for (var i=0; i < this.observers[eventType].length; ++i) {
                 this.observers[eventType][i](event);
             }

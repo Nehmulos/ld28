@@ -1,6 +1,13 @@
 function Serialize(serialObj, key, value, writeNull, skipFunctions) {
+    if (value == undefined) {
+        return;
+    }
+    if (value == null && !writeNull) {
+        return;
+    }
+    
     if (typeof value == "object") {
-        if (value.serialize) {
+        if (value && value.serialize) {
             serialObj[key] = value.serialize();
         } else {
             var obj = {};
@@ -11,14 +18,12 @@ function Serialize(serialObj, key, value, writeNull, skipFunctions) {
         }
     }
     
-    if (value == undefined) {
-        return;
-    }
-    if (value == null && !writeNull) {
-        return;
-    }
-    if (skipFunctions && typeof value == "function") {
-        return;
+    if (typeof value == "function") {
+        if (skipFunctions) {
+            return;
+        } else {
+            serialObj[key] = value.toString();
+        }
     }
     serialObj[key] = value;
 }

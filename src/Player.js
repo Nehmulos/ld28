@@ -1,5 +1,6 @@
 function Player() {
     this.entity = new Entity();
+    this.entity.icon = "@";
     var self = this;
     
     $(window).on("keyup", function(event) {

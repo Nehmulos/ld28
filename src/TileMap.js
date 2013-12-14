@@ -1,10 +1,16 @@
 function TileMap(w,h) {
     this.w = w;
     this.h = h;
+    this.entrances = {};
+    this.tiles = [];
 }
 
 TileMap.prototype.setEntity = function(entity, entrance) {
-    console.log("todo impl entrances");
+    if (this.entrances[entrance]) {
+        this.tiles[this.entrances[entrance]].setEntity(entity);
+        return;
+    }
+    console.error("no entrances", entrance);
     this.tiles[0].setEntity(entity);
 }
 
@@ -16,10 +22,25 @@ TileMap.blank = function(w,h) {
 
 TileMap.forJsonData = function(data) {
     var t = new TileMap(data.w, data.h);
-    var total = this.totalTiles();
+    var total = t.totalTiles();
+    
     for (var i=0; i < total; ++i) {
-        this.tiles.push(Tile.forJsonData(this, data.tiles[i]));
+        t.tiles.push(Tile.forChar(t, data.tileString[i]));
     }
+    /*
+    for (var i=0; i < total; ++i) {
+        t.tiles.push(Tile.forJsonData(t, data.tiles[i]));
+    }
+    */
+    
+    t.entrances = data.entrances
+    for (var i=0; i < data.exits; ++i) {
+        var exit = data.exits[i];
+        t.tiles[exit.i].onEnter = function(event) {
+            console.log("enter");
+        }
+    }
+    return t;
 }
 
 TileMap.prototype.initTiles = function(w,h) {

@@ -2,32 +2,58 @@ function Tile(tileMap, type) {
     this.tileMap = tileMap;
     this.entity = null;
     this.type = type;
+    this.blocking = false;
     
     this.onEnter = null;
     this.onLeave = null;
     this.onTalkOn = null;
     this.onTalkTo = null;
     this.onSearch = null;
+    Observable.prototype.constructor.call(this);
+}
+
+Tile.prototype = new Observable();
+Tile.prototype.constructor = Tile;
+
+Tile.forChar = function(tileMap, c) {
+    var type = null;
+    for (var key in Tile.typeToChar) {
+        if (Tile.typeToChar[key] == c) {
+            type = key;
+            break;
+        }
+    }
+    var t = new Tile(tileMap, type);
+    return t;
+}
+
+Tile.typeToChar = {
+    "floor": ".",
+    "wallV": "|",
+    "wallH": "-",
+    "wall": "|",
+    "pit": "v",
 }
 
 Tile.prototype.icon = function() {
     if (this.entity && this.entity.icon) {
         return this.entity.icon;
     }
-    switch(this.type) {
-        case "floor": return ".";
-        case "wall":
-        case "wallV": return "|";
-        case "wallH": return "-";
-        case "pit": return "v";
-        default: return "x";
-    }
+    return Tile.typeToChar[this.type] || "";
 }
 
 Tile.prototype.setEntity = function(entity) {
     if (!this.entity) {
+        var oldTile = entity.tile;
+        
         this.entity = entity;
         entity.tile = this;
+        
+        if (oldTile) {
+            oldTile.entity = null;
+            oldTile.fireEvent("iconChange");
+        }
+        this.fireEvent("iconChange");
         return true;
     } else {
         console.log("tile already used by other entity");
@@ -37,12 +63,14 @@ Tile.prototype.setEntity = function(entity) {
 
 Tile.prototype.serialize = function() {
     var obj = {};
-    Serialize(obj, "type", type);
+    Serialize(obj, "type", this.type);
+    Serialize(obj, "blocking", this.blocking);
     Serialize(obj, "onEnter", this.onEnter);
     Serialize(obj, "onLeave", this.onLeave);
     Serialize(obj, "onTalkOn", this.onTalkOn);
     Serialize(obj, "onTalkTo", this.onTalkTo);
     Serialize(obj, "onSearch", this.onSearch);
+    return obj;
 }
 
 Tile.prototype.getPos = function() {
@@ -63,8 +91,8 @@ Tile.prototype.inDirection = function(direction) {
     var h = this.tileMap.h;
     switch (direction) {
         case "north": return pos.y > 0 ? this.tileMap.tiles[pos.i-h] : null;
-        case "east": return pos.x > 0 ? this.tileMap.tiles[pos.i-1] : null;
-        case "west": return pos.x < w-1 ? this.tileMap.tiles[pos.i+1] : null;
+        case "east": return pos.x < w-1 ? this.tileMap.tiles[pos.i+1] : null;
+        case "west": return pos.x > 0 ? this.tileMap.tiles[pos.i-1] : null;
         case "south": return pos.y < h-1 ? this.tileMap.tiles[pos.i+h] : null;
         default: console.error("invalid direction", direction);
     }

@@ -7,8 +7,9 @@ Game.prototype.init = function() {
     Resources.instance.load();
     this.player = new Player();
     this.miniMap = new MiniMap();
-    this.setMap(TileMap.blank(10,10));
+    this.setMap(TileMap.forJsonData(MapStart), "init");
     this.editMode();
+    console.log(this.tileMap.serialize());
 };
 
 Game.prototype.addTextStep = function(step) {

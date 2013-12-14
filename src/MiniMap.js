@@ -12,6 +12,7 @@ MiniMap.prototype.reset = function(tileMap) {
     this.iconW = Math.floor(mm.width() / tileMap.w);
     this.iconH = Math.floor(mm.height() / (tileMap.h));
 
+    var self = this;
     for (var y=0; y < tileMap.h; ++y) {    
         for (var x=0; x < tileMap.w; ++x) {
             var i = (y*tileMap.w) + x;
@@ -25,8 +26,18 @@ MiniMap.prototype.reset = function(tileMap) {
             el.style.width = this.iconW + "px";
             el.style.height = this.iconH + "px";
             $(el).append(icon);
-            mm.append(el)
+            mm.append(el);
             this.tiles.push(el);
+            
+            // TODO remove observers
+            (function() {
+                var iSafe = i;
+                tileMap.tiles[i].addObserver("iconChange", function(event) {
+                    var ic = self.createTileIcon(tileMap.tiles[iSafe].icon());
+                    $(self.tiles[iSafe]).empty();
+                    $(self.tiles[iSafe]).append(ic);
+                });
+            })();
         }
     }
 }
