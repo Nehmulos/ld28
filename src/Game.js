@@ -1,7 +1,7 @@
 function Game() {
     this.stepQuery = [];
     this.maxDelay = 2000;
-    this.charDelay = 40;
+    this.charDelay = 30;
     Observable.prototype.constructor.call(this);
 }
 
@@ -15,7 +15,8 @@ Game.prototype.init = function() {
     this.setMap(TileMap.forJsonData(MapStart), "init");
     this.editMode();
     this.addTextStep(new TextStep("", 500));
-    this.addTextStep(new TextStep("Fugg u punk"));
+    this.addTextStep(new TextStep("You wake up on a cold stone floor."));
+    this.addTextStep(new TextStep("This is bullshit."));
 };
 
 Game.prototype.addTextStep = function(step) {
@@ -53,16 +54,24 @@ Game.prototype.animateAppend = function(gt, text) {
     text = text.split("").map(function(t) {
         return "<span style=\"display:none;\">" + t + "</span>";
     });
+    this.waitingForDelay = true;
     var i = 0;
     var self = this;
     var interval = window.setInterval(function() {
         var char = $(text[i]);
         gt.append(char);
-        char.fadeIn();
         ++i;
         if (i >= text.length) {
             window.clearInterval(interval);
-            self.fireEvent("appendAnimationFinished");
+            char.fadeIn(function() {
+                window.setTimeout(function() {
+                    self.waitingForDelay = false;
+                    self.executeNext();            
+                }, 100);
+            });
+            //self.fireEvent("appendAnimationFinished");
+        } else {
+            char.fadeIn();
         }
     }, this.charDelay);
 }
