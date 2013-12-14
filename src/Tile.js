@@ -30,8 +30,9 @@ Tile.forChar = function(tileMap, c) {
 Tile.typeToChar = {
     "floor": ".",
     "wallV": "|",
-    "wallH": "-",
+    "wallH": "—",
     "wall": "|",
+    "door": "+",
     "pit": "v",
 }
 
@@ -90,10 +91,10 @@ Tile.prototype.inDirection = function(direction) {
     var w = this.tileMap.w;
     var h = this.tileMap.h;
     switch (direction) {
-        case "north": return pos.y > 0 ? this.tileMap.tiles[pos.i-h] : null;
+        case "north": return pos.y > 0 ? this.tileMap.tiles[pos.i-w] : null;
         case "east": return pos.x < w-1 ? this.tileMap.tiles[pos.i+1] : null;
         case "west": return pos.x > 0 ? this.tileMap.tiles[pos.i-1] : null;
-        case "south": return pos.y < h-1 ? this.tileMap.tiles[pos.i+h] : null;
+        case "south": return pos.y < h-1 ? this.tileMap.tiles[pos.i+w] : null;
         default: console.error("invalid direction", direction);
     }
 }

@@ -3,6 +3,7 @@
     height: 200px;
     background-color: #1b1b1b;
     overflow: hidden;
+    text-align: center;
 }
 
 #minimap.edit .tile:hover {
@@ -15,10 +16,15 @@
     float:left;
     font-height: 1em;
     line-height: 100%;
+    vertical-align: bottom;
 }
 
 #minimap .tile.first {
     clear:left;
+}
+
+#editTile {
+    display: none;
 }
 
 #items {
