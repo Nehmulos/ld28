@@ -1,8 +1,19 @@
-tile map:
-    move, collide with wall
-    minimap render images, tiles for all walls
-    special icons
+Choise Ui
+    pick (n) lines
+    pick direction
+
+Player choises
+    styles modifiers (aggressive/peaceful, agile/clumsy, corwardish)
     
-textStep:
-    print, delay, char by char show,
+Player inventory
+    slots, drop item
+Tile: items
     
+TextStep conditions
+    based on choises and inventory
+    
+Map transitions
+
+Sounds:
+    walking
+    wind, birds, small animals

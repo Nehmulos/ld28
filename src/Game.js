@@ -14,7 +14,7 @@ Game.prototype.init = function() {
     this.miniMap = new MiniMap();
     this.setMap(TileMap.forJsonData(MapStart), "init");
     this.editMode();
-    this.addTextStep(new TextStep("", 500));
+    this.addTextStep(new TextStep(500));
     this.addTextStep(new TextStep("You wake up on a cold stone floor."));
     this.addTextStep(new TextStep("This is bullshit."));
 };
@@ -39,27 +39,35 @@ Game.prototype.executeNext = function() {
 
 Game.prototype.execute = function(step) {
     var gt = $("#gameText");
-    gt.empty();
+    if (step.clear) {
+        gt.empty();
+    }
     var text = step.text();
-    this.animateAppend(gt, text);
+    var el = document.createElement("div");
+    el.className = "textBlock";
+    gt.append(el);
+    this.animateAppend(el, text);
     if (step.delay) {
         this.waitForDelay(step.delay);
     }
 }
 
-Game.prototype.animateAppend = function(gt, text) {
+Game.prototype.animateAppend = function(el, text) {
     if (!text) {
         return;
     }
     text = text.split("").map(function(t) {
-        return "<span style=\"display:none;\">" + t + "</span>";
+        var span = document.createElement("span");
+        span.style.display = "none";
+        span.textContent = t;
+        return span;
     });
     this.waitingForDelay = true;
     var i = 0;
     var self = this;
     var interval = window.setInterval(function() {
         var char = $(text[i]);
-        gt.append(char);
+        el.appendChild(char.get(0));
         ++i;
         if (i >= text.length) {
             window.clearInterval(interval);

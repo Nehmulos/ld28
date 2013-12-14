@@ -1,12 +1,21 @@
-function TextStep(steps, delay) {
-    if (steps instanceof Array) {
-        this.steps = steps;
-    } else if (typeof steps === "string") {
-        this.steps = [steps];
+function TextStep(arg) {
+    this.string = "";
+    this.delay = 0;
+    this.clear = false;
+    
+    if (typeof arg == "string") {
+        this.string = arg
+    } else if (typeof arg == "number") {
+        this.delay = arg;
+    } else if (typeof arg == "object") {
+        for (var key in arg) {
+            this[key] = arg[key];
+        }
+    } else {
+        console.warn("step with no args");
     }
-    this.delay = typeof delay == "number" ? delay : 0;
 }
 
 TextStep.prototype.text = function() {
-    return this.steps.join(" ");
+    return this.string;
 }
