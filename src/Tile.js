@@ -12,30 +12,33 @@ Tile.prototype.constructor = Tile;
 
 Tile.forChar = function(tileMap, c) {
     var type = null;
+    var blocking = false;
     for (var key in Tile.typeToChar) {
-        if (Tile.typeToChar[key] == c) {
+        if (Tile.typeToChar[key].icon == c) {
             type = key;
+            blocking = Tile.typeToChar[key].blocking;
             break;
         }
     }
     var t = new Tile(tileMap, type);
+    t.blocking = blocking;
     return t;
 }
 
 Tile.typeToChar = {
-    "floor": ".",
-    "wallV": "|",
-    "wallH": "—",
-    "wall": "|",
-    "door": "+",
-    "pit": "v",
+    "floor": { icon: ".", blocking: false },
+    "wallV": { icon: "|", blocking: true },
+    "wallH": { icon: "—", blocking: true },
+    "wall": { icon: "|", blocking: true },
+    "door": { icon: "+", blocking: false },
+    "pit": { icon: "v", blocking: false },
 }
 
 Tile.prototype.icon = function() {
     if (this.entity && this.entity.icon) {
         return this.entity.icon;
     }
-    return Tile.typeToChar[this.type] || "";
+    return Tile.typeToChar[this.type] ? Tile.typeToChar[this.type].icon : "";
 }
 
 Tile.prototype.setEntity = function(entity) {
