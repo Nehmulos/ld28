@@ -1,5 +1,8 @@
 function MiniMap() {
-    
+    var self = this;
+    $(window).resize(function() {
+        self.resize();
+    })
 }
 
 MiniMap.prototype.reset = function(tileMap) {
@@ -11,6 +14,8 @@ MiniMap.prototype.reset = function(tileMap) {
     
     this.iconW = Math.floor(mm.width() / tileMap.w);
     this.iconH = Math.floor(mm.height() / (tileMap.h));
+
+    this.iconH = this.iconW = Math.min(this.iconW, this.iconH)
 
     var self = this;
     for (var y=0; y < tileMap.h; ++y) {    
@@ -39,6 +44,20 @@ MiniMap.prototype.reset = function(tileMap) {
                 });
             })();
         }
+    }
+}
+
+MiniMap.prototype.resize = function() {
+    var mm = $("#minimap");
+    this.iconW = Math.floor(mm.width() / this.tileMap.w);
+    this.iconH = Math.floor(mm.height() / this.tileMap.h);
+
+    this.iconH = this.iconW = Math.min(this.iconW, this.iconH);
+    
+    for (var i=0; i < this.tiles.length; ++i) {
+        var el = this.tiles[i];
+        el.style.width = this.iconW + "px";
+        el.style.height = this.iconH + "px";
     }
 }
 
