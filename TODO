@@ -12,8 +12,6 @@ Tile: items
 TextStep conditions
     based on choises and inventory
     
-Map transitions
-
 Sounds:
     walking
     wind, birds, small animals

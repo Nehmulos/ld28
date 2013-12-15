@@ -1,7 +1,7 @@
 function Game() {
     this.stepQuery = [];
     this.maxDelay = 2000;
-    this.charDelay = 12;
+    this.charDelay = 6;
     Observable.prototype.constructor.call(this);
 }
 
@@ -13,11 +13,12 @@ Game.prototype.init = function() {
     this.player = new Player();
     this.miniMap = new MiniMap();
     this.setMap(TileMap.forJsonData(MapStart), "init");
-    this.editMode();
-    this.addTextStep(new TextStep("You wake up on a cold stone floor."));
-    this.addTextStep(new TextStep("You don't know how you got here."));
-    this.addTextStep(new TextStep("Your head is hurting."));
+    ts("You wake up on a cold and mossy stone floor.");
+    ts("You are in a dark underground chamber and can't remember anything.");
+    ts("Your head is hurting.");
     ts("As you look down, you find a key hanging on a string around your neck.");
+    ts("-");
+    ts("A dim green light shines through the door to your right");
 };
 
 Game.prototype.addTextStep = function(step) {
@@ -77,7 +78,7 @@ Game.prototype.animateAppend = function(el, text) {
                 window.setTimeout(function() {
                     self.waitingForDelay = false;
                     self.executeNext();            
-                }, 100);
+                }, 6);
             });
             //self.fireEvent("appendAnimationFinished");
         } else {
@@ -89,6 +90,7 @@ Game.prototype.setMap = function(tileMap, entrance) {
     this.tileMap = tileMap;
     this.tileMap.setEntity(this.player.entity, entrance);
     this.miniMap.reset(this.tileMap);
+    this.editMode();
 }
 
 Game.prototype.editMode = function() {

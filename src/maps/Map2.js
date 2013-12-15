@@ -12,7 +12,7 @@ var Map2 = {
         "           ",
         
     entrances: {
-        doorStart: 36
+        doorStart: [3,3]
     },
     
     exits: {
@@ -21,9 +21,13 @@ var Map2 = {
     
     scripts: [
         {
-            pos: {x: 0, y:3},
+            args: {track: true},
+            pos: [3,3],
             onFirstEnter: function() {
-            
+                ts({clear: true});
+                ts("A gigantic head of a statue observes you from the opposite site of the room.");
+                ts("It is worked into the wall and looks like a Mayan priest.");
+                ts("There are two doors in this room.");
             }
         },
         {

@@ -30,9 +30,12 @@ Tile.typeToChar = {
     "floor": { icon: ".", blocking: false },
     "wallV": { icon: "|", blocking: true },
     "wallH": { icon: "—", blocking: true },
+    "wallVH": { icon: "\\", blocking: true },
+    "wallVH": { icon: "/", blocking: true },
     "wall": { icon: "|", blocking: true },
     "door": { icon: "+", blocking: false },
     "pit": { icon: "v", blocking: false },
+    "statue": { icon: "{", blocking: true },
 }
 
 Tile.prototype.icon = function() {
@@ -87,7 +90,7 @@ Tile.prototype.serialize = function() {
 }
 
 Tile.prototype.getId = function() {
-    return this.tileMap.name + this.getPos().i;
+    return this.tileMap.name + "_" + this.getPos().i;
 }
 
 Tile.prototype.getPos = function() {
