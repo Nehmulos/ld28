@@ -1,7 +1,7 @@
 function Game() {
     this.stepQuery = [];
     this.maxDelay = 2000;
-    this.charDelay = 30;
+    this.charDelay = 12;
     Observable.prototype.constructor.call(this);
 }
 
@@ -14,9 +14,10 @@ Game.prototype.init = function() {
     this.miniMap = new MiniMap();
     this.setMap(TileMap.forJsonData(MapStart), "init");
     this.editMode();
-    this.addTextStep(new TextStep(500));
     this.addTextStep(new TextStep("You wake up on a cold stone floor."));
-    this.addTextStep(new TextStep("This is bullshit."));
+    this.addTextStep(new TextStep("You don't know how you got here."));
+    this.addTextStep(new TextStep("Your head is hurting."));
+    ts("As you look down, you find a key hanging on a string around your neck.");
 };
 
 Game.prototype.addTextStep = function(step) {
@@ -109,3 +110,8 @@ Game.prototype.waitForDelay = function(delay) {
 
 Game.instance = new Game();
 Game.instance.init();
+
+// shortcut
+function ts(value) {
+    Game.instance.addTextStep(new TextStep(value));
+}

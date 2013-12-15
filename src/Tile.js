@@ -42,11 +42,15 @@ Tile.prototype.icon = function() {
     return Tile.typeToChar[this.type] ? Tile.typeToChar[this.type].icon : "";
 }
 
-Tile.prototype.canMoveHere = function(entity) {
+Tile.prototype.attemptToEnter = function(entity) {
     if (this.blocking) {
         return false;
     } else if (this.type == "door") {
-        return this.open == false ? false : true;
+        var success = this.open == false ? false : true;
+        if (!success) {
+            this.fireEvent("onAttemptToEnter", {entity: entity});
+        }
+        return success;
     }
     return true;
 }

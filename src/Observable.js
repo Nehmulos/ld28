@@ -14,13 +14,17 @@ Observable.inherit(Object, {
     },
     
     removeObserver: function(eventType, observer) {
-        var found = false;;
+        var found = false;
         if (this.observers[eventType]) {
             for (var i=0; i < this.observers[eventType].length; ++i) {
-                if (this.observers[eventType]) {
+                if (this.observers[eventType] == observer) {
                     this.observers[eventType].splice(0, 1);
                     found = true;
                 }
+            }
+        } else {
+            for (var type in this.observers) {
+                found = this.removeObserver(type, observer) || found;
             }
         }
         return found;

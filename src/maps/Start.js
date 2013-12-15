@@ -25,6 +25,13 @@ var MapStart = {
         {
             pos: [7,3],
             args: { open:false },
+            onAttemptToEnter: function(event) {
+                if (!event.entity.isPlayer()) return;
+                event.context.open = true;
+                ts("You see a stone door infront of you. It does not have a lock.");
+                ts("You carefully push it open.");
+                event.context.removeObserver(this);
+            }
         },
         // trip
         {
@@ -32,7 +39,8 @@ var MapStart = {
             args: {track: true },
             onFirstEnter: function(event) {
                 if (event.entity.isPlayer()) {
-                    Game.instance.add(new TextStep("You slip on the wet ground and hit your head."));
+                    ts("You slip on the wet ground and hit your head.");
+                    event.context.removeObserver(this);
                 }
             }
         }

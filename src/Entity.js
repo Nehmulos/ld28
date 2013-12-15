@@ -5,7 +5,7 @@ function Entity() {
 
 Entity.prototype.move = function(direction) {
     var nextTile = this.tile.inDirection(direction);
-    if (nextTile && nextTile.canMoveHere(this)) {
+    if (nextTile && nextTile.attemptToEnter(this)) {
         nextTile.setEntity(this);
         if (nextTile.track) {
             this.tileHistory[nextTile.getId()] = true;
