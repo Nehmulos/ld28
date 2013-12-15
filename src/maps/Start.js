@@ -1,4 +1,5 @@
-MapStart = {
+var MapStart = {
+    name: "MapStart",
     w: 10,
     h: 7,
     tileString: 
@@ -12,22 +13,26 @@ MapStart = {
         
     entrances: {
         init: 34,
-        doorStart: 55
+        doorStart: [6,3]
     },
     
     exits: {
-        doorStart: {i: 37, map: "Map2"}
+        doorStart: {pos: [7,3], map: "Map2"}
     },
     
     scripts: [
+        //doorStart
         {
-            i: 35,
-            onEnter: function(event) {
+            pos: [7,3],
+            args: { open:false },
+        },
+        // trip
+        {
+            pos: [5,3],
+            args: {track: true },
+            onFirstEnter: function(event) {
                 if (event.entity.isPlayer()) {
-                    console.log(
-                        "player entered tile",
-                        event.context.removeObserver("onEnter", this)
-                    );
+                    Game.instance.add(new TextStep("You slip on the wet ground and hit your head."));
                 }
             }
         }

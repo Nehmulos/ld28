@@ -23,6 +23,7 @@ Game.prototype.addTextStep = function(step) {
     this.stepQuery.push(step);
     this.executeNext();
 }
+Game.prototype.add = Game.prototype.addTextStep;
 
 Game.prototype.executeNext = function() {
     if (this.waitingForDelay) {

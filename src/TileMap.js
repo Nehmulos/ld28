@@ -7,7 +7,7 @@ function TileMap(w,h) {
 
 TileMap.prototype.setEntity = function(entity, entrance) {
     if (this.entrances[entrance]) {
-        this.tiles[this.entrances[entrance]].setEntity(entity);
+        this.at(this.entrances[entrance]).setEntity(entity);
         return;
     }
     console.error("no entrances", entrance);
@@ -22,6 +22,7 @@ TileMap.blank = function(w,h) {
 
 TileMap.forJsonData = function(data) {
     var t = new TileMap(data.w, data.h);
+    t.name = data.name;
     var total = t.totalTiles();
     
     for (var i=0; i < total; ++i) {
@@ -30,19 +31,31 @@ TileMap.forJsonData = function(data) {
     
     t.entrances = data.entrances
     for (var key in data.exits) {
-        var exit = data.exits[key];
-        t.tiles[exit.i].addObserver("onEnter", function(event) {
-            console.log("exit use", event.entity);
-        });
+        (function() {
+            var exit = data.exits[key];
+            var entrance = key;
+            t.at(exit.pos).addObserver("onEnter", function(event) {
+                Game.instance.setMap(
+                    TileMap.forJsonData(window[exit.map]),
+                    entrance
+                );
+            });
+        })();
     }
     
     for (var i=0; i < data.scripts.length; ++i) {
         var script = data.scripts[i];
         for (var key in script) {
-            if (key == "i") {
+            if (key == "pos") {
                 continue;
             }
-            t.tiles[script.i].addObserver(key, script[key]);
+            if (key == "args") {
+                for (var k in script.args) {
+                    t.at(script.pos)[k] = script.args[k];
+                }
+                continue;
+            }
+            t.at(script.pos).addObserver(key, script[key]);
         }
     }
     
@@ -62,6 +75,20 @@ TileMap.prototype.initTiles = function(w,h) {
 TileMap.prototype.totalTiles = function() {
     return this.w * this.h;
 }
+
+TileMap.prototype.at = function(pos) {
+    if (typeof pos == "number") {
+        return this.tiles[pos];
+    } else if (pos instanceof Array) {
+        return this.tiles[pos[0] + (pos[1]*this.w)];
+    } else if (typeof pos == "object" && pos) {
+        return this.tiles[pos.x + (pos.y*this.w)];
+    } else {
+        console.error("invalid tile position", pos);
+    }
+    return null;
+}
+
 
 TileMap.prototype.serialize = function() {
     return {

@@ -1,5 +1,6 @@
 function Editor(miniMap) {
     var self = this;
+    this.miniMap = miniMap;
     
     for (var i=0; i < miniMap.tiles.length; ++i) {
         (function() {
@@ -18,5 +19,5 @@ function Editor(miniMap) {
 }
 
 Editor.prototype.setEditTile = function(tileEl, index) {
-    console.log("edit tile", tileEl, index);
+    console.log("edit tile", tileEl, this.miniMap.tileMap.tiles[index].getPos());
 }

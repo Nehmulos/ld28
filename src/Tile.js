@@ -3,6 +3,7 @@ function Tile(tileMap, type) {
     this.entity = null;
     this.type = type;
     this.blocking = false;
+    this.track = false;
     
     Observable.prototype.constructor.call(this);
 }
@@ -41,6 +42,15 @@ Tile.prototype.icon = function() {
     return Tile.typeToChar[this.type] ? Tile.typeToChar[this.type].icon : "";
 }
 
+Tile.prototype.canMoveHere = function(entity) {
+    if (this.blocking) {
+        return false;
+    } else if (this.type == "door") {
+        return this.open == false ? false : true;
+    }
+    return true;
+}
+
 Tile.prototype.setEntity = function(entity) {
     if (!this.entity) {
         var oldTile = entity.tile;
@@ -55,6 +65,9 @@ Tile.prototype.setEntity = function(entity) {
         }
         this.fireEvent("iconChange");
         this.fireEvent("onEnter", {entity: entity});
+        if (!entity.visitedTile(this)) {
+            this.fireEvent("onFirstEnter", {entity: entity});
+        }
         return true;
     } else {
         console.log("tile already used by other entity");
@@ -67,6 +80,10 @@ Tile.prototype.serialize = function() {
     Serialize(obj, "type", this.type);
     Serialize(obj, "blocking", this.blocking);
     return obj;
+}
+
+Tile.prototype.getId = function() {
+    return this.tileMap.name + this.getPos().i;
 }
 
 Tile.prototype.getPos = function() {
